@@ -43,7 +43,7 @@ private:
 	bool over = false;				//is the generation over
 	bool sorted = false;			//is the score data sorted
 
-	int mutation_rate = -1;			//percentage chance of mutation
+	int mutation_rate = 30;			//percentage chance of mutation
 	int population_size = 10;		//number of paddles and ball pairs
 
 	std::vector<Paddle> paddles;	//hold all current gen paddle data

@@ -1,6 +1,6 @@
 #include "SFML/Graphics.hpp"
 #include "GeneticPong.h"
-
+#include <windows.h>
 #include <iostream>
 
 

@@ -1,7 +1,7 @@
 #pragma once
-#include "Structs.h"
 #include "SFML/Graphics.hpp"
 using namespace sf;
+
 
 class Paddle
 {
@@ -15,7 +15,7 @@ class Paddle
 		int score = 0;
 		float multiplier = 0;
 		int ball_y_sensitivity = 0;
-		float speed = 4.f;
+		float speed = 5.f;
 
 	private:
 		int ball_collisions;

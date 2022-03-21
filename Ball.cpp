@@ -20,32 +20,27 @@ bool Ball::move_ball()
         switch (direction)
         {
         case 0:
-            circ.move(-v, v);
+            circ.move(-v, v);   //bottom left diag
             break;
         case 1:
-            circ.move(-v, -v);
+            circ.move(-v, -v);  //top left diag
             break;
         case 2:
             circ.move(v, -v);
-        case 3:
+        case 3: 
             circ.move(v, v);
-        case 4:
-            circ.move(v, 0);
+        case 4: //if paddle hits
+            circ.move(v * 2, 0);
         default:
             break;
         }
 
 
 
-        if ((circ.getPosition().y > 480)) {
-            if (o) {
-                direction = 1;
-            }
-            else {
-                direction = 2;
-            }
+        if ((circ.getPosition().y > 480)) { //bottom wall
+            direction = 1;
         }
-        else if ((circ.getPosition().x >= 590)) {
+        else if ((circ.getPosition().x >= 590)) {   //initial start
             if (o) {
                 direction = 0;
             }
@@ -53,14 +48,12 @@ bool Ball::move_ball()
                 direction = 1;
             }
         }
-        else if ((circ.getPosition().y < 10)) {
+        else if ((circ.getPosition().y < 10)) { //top wall
                 direction = 0;
-            
         }
         else if ((circ.getPosition().x <= 0)) {
             direction = 9;
             return true;
-            //circ.setPosition(600 - 20, 500 / 2);
         }
     
         return false;

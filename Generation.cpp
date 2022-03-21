@@ -50,30 +50,43 @@ pair<int, float> Generation::crossover_paddle_values(vector<int> pastScore, vect
 		return mutate_paddle_values(pastScore, pastSens, pastMulti);	//return the mutated paddle values
 	}
 	else {
-		int increment;
+		int increment = 0;
+		int a = 0;
+		float b = 0.f;
+		float fIncrement = 0.f;
 		//pair <int, float> value;
 		int sensRange = pastSens[population_size - 1];
 		float multiRange = pastMulti[population_size - 1];
+		pair<int, float> value;
 
-		increment = GenerateRandom(1, 9);
-		float fIncrement = float(increment) / 10;
+		if (GenerateRandom(0, 5) > 2) {
+			increment = GenerateRandom(1, 9);
+			fIncrement = float(increment) / 10;
 
-		int a = GenerateRandom(sensRange - increment, sensRange + increment);
-		float b = GenerateRandom(multiRange - (fIncrement), multiRange + (fIncrement));
+			int iLower = sensRange - increment;
+			int iUpper = sensRange + increment;
 
-		pair <int, float> value(a, b);	//take the highest scoring last generation paddle: vectors are pre-sorted
 
-		
-		if (value.first < 0 || value.first > 100) {
-			value.first = GenerateRandom(sensRange - increment, sensRange + increment);
+			int a = GenerateRandom(iLower, iUpper);
+			float b = GenerateRandom(multiRange - (fIncrement), multiRange + (fIncrement));
+
+			pair <int, float> value(a, b);	//take the highest scoring last generation paddle: vectors are pre-sorted
+
+			return value;
+		}
+		else {
+			pair <int, float> value(sensRange, multiRange);	
+			return value;
 		}
 
-		if (value.second < 0 || value.second > 2) {
-			value.second = GenerateRandom(multiRange - (fIncrement), multiRange + (fIncrement));
-		}
+		cout << "last generation sens:" << sensRange << " + " << "last generation multiplier" << multiRange << endl;
+		cout << "this generation increment: " << increment << endl;
+		cout << "this generation float increment: " << fIncrement << endl;
+		cout << "this a:" << a << " + " << "this b " << b << endl;
 
-		//cout << value.first << " " << value.second << endl;
-		return value;
+		//cout << "this generation multi:" << value.first << " + " << "this generation multiplier" << value.second << endl;
+
+
 	}
 }
 

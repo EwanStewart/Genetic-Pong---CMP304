@@ -1,8 +1,10 @@
 #pragma once
-#include "Structs.h"
 #include "SFML/Graphics.hpp"
 using namespace sf;
-
+struct BallPosition {
+	int x;
+	int y;
+};
 class Ball
 {
 	public:
