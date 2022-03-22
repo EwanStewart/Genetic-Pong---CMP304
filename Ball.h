@@ -16,7 +16,6 @@ class Ball
 		int direction;
 		CircleShape get_circ();
 		void reset();
-		void hit();
 		bool ballOut = false;
 	private:
 

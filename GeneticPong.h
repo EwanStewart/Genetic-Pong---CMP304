@@ -18,5 +18,6 @@ private:
 	vector<Generation> gens;	//holds every generations data
 	int current_generation = -1;
 	bool over = false;
+	bool gameOver = false;
 };
 

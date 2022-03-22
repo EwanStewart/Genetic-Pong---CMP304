@@ -83,9 +83,7 @@ void Ball::reset()
     circ.setPosition(480, 300);
 }
 
-void Ball::hit() {
-    direction = 2;
-}
+
 
 
 
