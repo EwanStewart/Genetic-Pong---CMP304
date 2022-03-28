@@ -1,25 +1,31 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 using namespace sf;
-struct BallPosition {
-	int x;
-	int y;
-};
+
 class Ball
 {
 	public:
 
 		Ball(int c[3]);					//ball constructor
+
 		void draw_ball();
 		bool move_ball();
-		int direction;
+
+		//getters and setters
+		int getDirection();
+		float getSpeed();
 		CircleShape get_circ();
-		void reset();
-		bool ballOut = false;
+		bool getBallOut();
+
+		void setDirection(int);
+
 	private:
 
-		CircleShape circ;
 		int colour[3];
-		float speed = 4.8f;
+		int direction;
+		float speed = 5.f;
+		bool ballOut = false;
+		CircleShape circ;
+
 };
 

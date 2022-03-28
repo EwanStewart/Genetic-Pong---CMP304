@@ -20,14 +20,64 @@ pair<int, float> Generation::generate_paddle_values()	//generate paddle paramate
 
 pair<int, float> Generation::mutate_paddle_values(vector<int> pastScore, vector<int> pastSens, vector<float> pastMulti)
 {
-	if (GenerateRandom(0, 1) > 0) {
-		pair <int, float> value(pastSens[population_size-1], GenerateRandom(0, 5));
-		return value;
+	if (!otherMultiplierValues.empty()) {
+		int valueToUse = GenerateRandom(1, 10);
+
+		if (valueToUse < 7) {
+
+			if (GenerateRandom(0, 1)) {
+				pair <int, float> value(pastSens[population_size - 1], otherMultiplierValues[(GenerateRandom, otherMultiplierValues.size() - 1)]);
+				if (GenerateRandom(0, 1)) {
+					value.first = GenerateRandom(0, 500);
+				}
+				else {
+					value.second = GenerateRandom(0, 5);
+				}
+				cout << "mutating" << endl;
+				cout << value.first << " " << value.second << endl;
+				return value;
+			}
+			else {
+				pair <int, float> value(otherSensitivityValues[(GenerateRandom, otherSensitivityValues.size() - 1)], pastMulti[population_size - 1]);
+				if (GenerateRandom(0, 1)) {
+					value.first = GenerateRandom(0, 500);
+				}
+				else {
+					value.second = GenerateRandom(0, 5);
+				}
+				cout << "mutating" << endl;
+				cout << value.first << " " << value.second << endl;
+				return value;
+			}
+
+		} else {
+			pair <int, float> value(otherSensitivityValues[(GenerateRandom, otherSensitivityValues.size() -1)], otherMultiplierValues[(GenerateRandom, otherMultiplierValues.size() -1)]);
+			if (GenerateRandom(0, 1)) {
+				value.first = GenerateRandom(0, 500);
+			}
+			else {
+				value.second = GenerateRandom(0, 5);
+			}
+			cout << "mutating" << endl;
+			cout << value.first << " " << value.second << endl;
+			return value;
+		}
 	}
 	else {
-		pair <int, float> value(GenerateRandom(0, 500), pastMulti[population_size - 1]);
+		pair <int, float> value(pastSens[population_size - 1], pastMulti[population_size - 1]);
+		if (GenerateRandom(0, 1)) {
+			value.first = GenerateRandom(0, 500);
+		}
+		else {
+			value.second = GenerateRandom(0, 5);
+		}
+		cout << "mutating" << endl;
+		cout << value.first << " " << value.second << endl;
 		return value;
 	}
+	
+	
+
 }
 
 pair<int, float> Generation::generate_paddle_values(vector<int> pastScore, vector<int> pastSens, vector<float> pastMulti)	//generate paddle paramaters using past generation data
@@ -42,9 +92,8 @@ pair<int, float> Generation::generate_paddle_values(vector<int> pastScore, vecto
 
 pair<int, float> Generation::crossover_paddle_values(vector<int> pastScore, vector<int> pastSens, vector<float> pastMulti)
 {
-	int count = 0;
-	int sensRange;
-	float multiRange;
+	int sensRange = 0;
+	float multiRange = 0.f;
 
 	if (GenerateRandom(0, 100) < mutation_rate) {						//30% chance that the paddles ignore cross-over and mutate
 		return mutate_paddle_values(pastScore, pastSens, pastMulti);	//return the mutated paddle values
@@ -55,24 +104,36 @@ pair<int, float> Generation::crossover_paddle_values(vector<int> pastScore, vect
 
 		if (!otherMultiplierValues.empty()) {
 			int valueToUse = GenerateRandom(1, 10);
-			if (valueToUse > 0) {
-				sensRange = pastSens[population_size - 1];
-				multiRange = pastMulti[population_size - 1];
+			int valueToUse2 = GenerateRandom(0, otherMultiplierValues.size()-1);
+
+			if (valueToUse < 7) {
+				if (GenerateRandom(0, 1)) {
+					cout << "parent and random" << endl;
+					sensRange = pastSens[population_size - 1];
+					multiRange = otherMultiplierValues[valueToUse2];
+				}
+				else {
+					cout << "parent and random" << endl;
+					sensRange = otherSensitivityValues[valueToUse2];
+					multiRange = pastMulti[population_size - 1];
+				}
 			}
 			else {
-				valueToUse = GenerateRandom(0, otherMultiplierValues.size());
-				sensRange = pastSens[valueToUse];
-				multiRange = pastMulti[valueToUse];
+				if (GenerateRandom(0, 1)) {
+					cout << "both random parents" << endl;
+					sensRange = otherSensitivityValues[GenerateRandom(0, otherSensitivityValues.size()-1)];
+					multiRange = otherMultiplierValues[GenerateRandom(0, otherMultiplierValues.size()-1)];
+				}
 			}
-		}
-		else {
+
+		} else {
+			cout << "one parent" << endl;
 			sensRange = pastSens[population_size - 1];
 			multiRange = pastMulti[population_size - 1];
 		}
 
-
-
-
+		cout << sensRange << " " << multiRange << endl;
+	
 		pair<int, float> value;
 
 		if (GenerateRandom(1, 10) >= 5) {
@@ -92,20 +153,18 @@ pair<int, float> Generation::crossover_paddle_values(vector<int> pastScore, vect
 			}
 
 			pair <int, float> value(a, b);	//take the highest scoring last generation paddle: vectors are pre-sorted
-
 			return value;
 		}
 		else {
 			pair <int, float> value(sensRange, multiRange);	
 			return value;
 		}
+		
 	}
 }
 
 Generation::Generation() //constructor for generation zero
 {
-
-	srand(time(NULL));  //seed random 
 
 	int rgb[3];			//paddle, ball RGB value
 
@@ -119,11 +178,8 @@ Generation::Generation() //constructor for generation zero
 			rgb[i] = rand() % 256;
 		}
 
-		Paddle paddle(rgb, paddleValues.first, paddleValues.second);	//create paddle with generated parameters
-		Ball ball(rgb);													//create ball
-
-		paddles.push_back(paddle);							//push to vector: holds all object information for the generation
-		balls.push_back(ball);
+		paddles.push_back(* new Paddle(rgb, paddleValues.first, paddleValues.second));							
+		balls.push_back(* new Ball(rgb));
 
 	}
 	
@@ -131,7 +187,6 @@ Generation::Generation() //constructor for generation zero
 
 Generation::Generation(vector<int> pastScore, vector<int> pastSens, vector<float> pastMulti)
 {
-	srand(time(NULL));  //seed random 
 
 	int rgb[3];			//paddle, ball RGB value
 
@@ -141,16 +196,9 @@ Generation::Generation(vector<int> pastScore, vector<int> pastSens, vector<float
 
 
 	for (int i = 0; i < pastScore.size() - 1; i++) {
-		if (((pastScore[i] == highestScore || (pastScore[i] >= 5)) && (pastSens[i] != highestSensitivity && pastMulti[i] != highestMultiplier))) {
-			cout << "pushing" << endl;
+		if (((pastScore[i] == highestScore || (pastScore[i] >= 3)) && (pastSens[i] != highestSensitivity && pastMulti[i] != highestMultiplier))) {
 			otherMultiplierValues.push_back(pastMulti[i]);
 			otherSensitivityValues.push_back(pastSens[i]);
-		}
-	}
-
-	if (!otherMultiplierValues.empty()) {
-		for (int i = 0; i < otherMultiplierValues.size(); i++) {
-			cout << otherMultiplierValues[i] << ", " << otherSensitivityValues[i] << endl;
 		}
 	}
 
@@ -192,7 +240,7 @@ bool Generation::run()
 	for (int i = 0; i < paddles.size(); i++) {
 
 		if (paddles[i].collide(balls[i].get_circ())) {	//if ball and paddle collide change the balls direction
-			balls[i].direction = 4;
+			balls[i].setDirection(4);
 		}
 
 	    paddles[i].move_paddle(balls[i].get_circ());

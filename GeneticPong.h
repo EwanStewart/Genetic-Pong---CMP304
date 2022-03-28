@@ -11,13 +11,15 @@ public:
 	vector<Ball> get_balls();
 	vector<Paddle> get_paddles();
 	vector<Generation> get_generations();
+
 	Generation get_current_generation();
 	int get_current_generation_value();
 
 private:
-	vector<Generation> gens;	//holds every generations data
 	int current_generation = -1;
 	bool over = false;
 	bool gameOver = false;
+	vector<Generation> gens;	//holds every generations data
+
 };
 

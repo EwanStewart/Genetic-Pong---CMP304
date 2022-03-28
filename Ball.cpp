@@ -1,13 +1,13 @@
 #include "Ball.h"
-#include <iostream>
 
-Ball::Ball(int c[3])
+Ball::Ball(int c[3])  
 {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {   //set the colour to match the ball
         colour[i] = c[i];
     }
-    direction = rand() % 2;
-    draw_ball();
+
+    direction = rand() % 2;     //random start direction
+    draw_ball();                
 }
 
 
@@ -15,7 +15,7 @@ bool Ball::move_ball()
 {
     int randomDirection = rand() % 2;
 
-    switch (direction)
+    switch (direction)  //dependant on onscreen collisions with walls or paddle set movement direction
     {
     case 0:
         circ.move(-speed, speed);   
@@ -33,13 +33,10 @@ bool Ball::move_ball()
         break;
     }
 
-
-
     if ((circ.getPosition().y > 480)) { //bottom wall
         direction = 1;
     }
     else if ((circ.getPosition().x >= 590)) {   //initial start
-        //randomDirection = 0;
         if (randomDirection) {
             direction = 0;
         }
@@ -56,21 +53,16 @@ bool Ball::move_ball()
     }
     
     return false;
-    
-
-
+   
 }
 
 void Ball::draw_ball()
 {
     circ.setRadius(5);
     circ.setFillColor(Color(colour[0], colour[1], colour[2]));
-    int num = (rand() % 250 - 100);
-    int y_pos = 250 + num;
+    int y_pos = (rand() % 500 - 100);   //random y position to spread the balls out
     circ.setPosition(480,y_pos);
 }
-
-
 
 
 CircleShape Ball::get_circ()
@@ -78,9 +70,24 @@ CircleShape Ball::get_circ()
     return circ;
 }
 
-void Ball::reset()
+bool Ball::getBallOut()
 {
-    circ.setPosition(480, 300);
+    return ballOut;
+}
+
+void Ball::setDirection(int val)
+{
+    direction = val;
+}
+
+
+int Ball::getDirection()
+{
+    return direction;
+}
+
+float Ball::getSpeed() {
+    return speed;
 }
 
 
