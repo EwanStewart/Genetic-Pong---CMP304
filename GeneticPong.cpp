@@ -23,7 +23,7 @@ bool GeneticPong::run_generation()
 
 			if (!over) {							//if the game is not over
 				for (int i = 0; i < gens[current_generation].getPaddleData().size(); i++) {	//check if any paddle score meets end condition
-					if (gens[current_generation].getPaddleData()[i].getScore() == 50) {
+					if (gens[current_generation].getPaddleData()[i].getScore() == 30) {
 						cout << gens[current_generation].getPaddleData()[i].getScore() << endl;
 						cout << gens[current_generation].getPaddleData()[i].getBallYSensitivity() << endl;
 						cout << gens[current_generation].getPaddleData()[i].getMultiplier() << endl;

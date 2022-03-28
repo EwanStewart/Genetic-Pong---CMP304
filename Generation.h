@@ -46,6 +46,9 @@ private:
 	int mutation_rate = 30;			//percentage chance of mutation
 	int population_size = 10;		//number of paddles and ball pairs
 
+	vector<float> otherMultiplierValues;
+	vector<int> otherSensitivityValues;
+
 	std::vector<Paddle> paddles;	//hold all current gen paddle data
 	std::vector<Ball> balls;		//hold all current gen ball data
 

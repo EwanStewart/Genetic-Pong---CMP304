@@ -10,7 +10,6 @@ class Ball
 	public:
 
 		Ball(int c[3]);					//ball constructor
-		BallPosition getPosition();			//ball return x,y position
 		void draw_ball();
 		bool move_ball();
 		int direction;
@@ -21,5 +20,6 @@ class Ball
 
 		CircleShape circ;
 		int colour[3];
+		float speed = 4.8f;
 };
 

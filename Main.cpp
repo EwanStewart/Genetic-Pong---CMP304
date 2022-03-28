@@ -47,7 +47,7 @@ int main() {
             }
         }
 
-        window.clear(Color(220, 220, 220));
+        window.clear(Color::White);
         
         if (!endCondition && pong.get_current_generation_value() != 100) {  //keep running the generational pong until end condition is triggered or generations > 100
             endCondition = pong.run_generation();

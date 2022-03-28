@@ -13,50 +13,49 @@ Ball::Ball(int c[3])
 
 bool Ball::move_ball()
 {
-    float v = 5.f;
-    int o = rand() % 2;
+    int randomDirection = rand() % 2;
+
+    switch (direction)
+    {
+    case 0:
+        circ.move(-speed, speed);   
+        break;
+    case 1:
+        circ.move(-speed, -speed);  
+        break;
+    case 2:
+        circ.move(speed, -speed);
+    case 3: 
+        circ.move(speed, speed);
+    case 4:                        
+        circ.move(speed, 0);
+    default:
+        break;
+    }
 
 
-        switch (direction)
-        {
-        case 0:
-            circ.move(-v, v);   //bottom left diag
-            break;
-        case 1:
-            circ.move(-v, -v);  //top left diag
-            break;
-        case 2:
-            circ.move(v, -v);
-        case 3: 
-            circ.move(v, v);
-        case 4: //if paddle hits
-            circ.move(v * 2, 0);
-        default:
-            break;
+
+    if ((circ.getPosition().y > 480)) { //bottom wall
+        direction = 1;
+    }
+    else if ((circ.getPosition().x >= 590)) {   //initial start
+        //randomDirection = 0;
+        if (randomDirection) {
+            direction = 0;
         }
-
-
-
-        if ((circ.getPosition().y > 480)) { //bottom wall
+        else {
             direction = 1;
         }
-        else if ((circ.getPosition().x >= 590)) {   //initial start
-            if (o) {
-                direction = 0;
-            }
-            else {
-                direction = 1;
-            }
-        }
-        else if ((circ.getPosition().y < 10)) { //top wall
-                direction = 0;
-        }
-        else if ((circ.getPosition().x <= 0)) {
-            direction = 9;
-            return true;
-        }
+    }
+    else if ((circ.getPosition().y < 10)) { //top wall
+            direction = 0;
+    }
+    else if ((circ.getPosition().x <= 0)) { //past the paddle
+        direction = 9;
+        return true;
+    }
     
-        return false;
+    return false;
     
 
 
@@ -64,10 +63,11 @@ bool Ball::move_ball()
 
 void Ball::draw_ball()
 {
-    circ.setRadius(10);
+    circ.setRadius(5);
     circ.setFillColor(Color(colour[0], colour[1], colour[2]));
-    int num = (rand() % 350 + 1 - 20) + 100;
-    circ.setPosition(480,num);
+    int num = (rand() % 250 - 100);
+    int y_pos = 250 + num;
+    circ.setPosition(480,y_pos);
 }
 
 
