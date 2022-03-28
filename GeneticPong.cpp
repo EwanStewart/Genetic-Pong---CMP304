@@ -1,5 +1,6 @@
 #include "GeneticPong.h"
-
+#include <iostream>
+#include <fstream>
 void GeneticPong::create_new_generation()	//creates generation zero
 {
 	current_generation++;
@@ -14,19 +15,19 @@ bool GeneticPong::run_generation()
 			}
 			gens.push_back(* new Generation(gens[current_generation].paddleScores,
 				gens[current_generation].paddleYSens, gens[current_generation].paddleMultiplier));	//push a new generation
-			over = false;																			//reset as new generation
+			over = false;																			//reset over bool, as new generation
 			current_generation++;
 		}
 		else {										//if generation still running
 			over = gens[current_generation].run();	//continue running
-			int score = 0;							//track paddle score
-
 			if (!over) {							//if the game is not over
 				for (int i = 0; i < gens[current_generation].getPaddleData().size(); i++) {	//check if any paddle score meets end condition
 					if (gens[current_generation].getPaddleData()[i].getScore() == 30) {
-						cout << gens[current_generation].getPaddleData()[i].getScore() << endl;
-						cout << gens[current_generation].getPaddleData()[i].getBallYSensitivity() << endl;
-						cout << gens[current_generation].getPaddleData()[i].getMultiplier() << endl;
+						std::ofstream outfile;
+						outfile.open("data.txt", std::ios_base::app); //record best paddle data
+						outfile << current_generation << " " << gens[current_generation].getPaddleData()[i].getBallYSensitivity() << " "
+								<< gens[current_generation].getPaddleData()[i].getMultiplier() << " "
+								<< gens[current_generation].getBallData()[i].getSpeed() - gens[current_generation].getPaddleData()[i].getSpeed() << endl;	
 						return true;	//end
 					}
 				}
@@ -56,6 +57,7 @@ int GeneticPong::get_current_generation_value()
 {
 	return current_generation;
 }
+
 
 vector<Generation> GeneticPong::get_generations()
 {
