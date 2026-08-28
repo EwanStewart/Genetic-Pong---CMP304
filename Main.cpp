@@ -1,8 +1,13 @@
 #include "SFML/Graphics.hpp"
 #include "GeneticPong.h"
-#include <windows.h>
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include <vector>
+#include <string>
 
 using namespace sf;
 using namespace std;
@@ -12,9 +17,28 @@ Font font;
 int height = 500;
 int width = 600;
 
+bool fontLoaded = false;
+
+void loadFont() {   //find any usable font on the system
+    const std::vector<std::string> candidates = {
+        "font/arial.ttf",
+        "../font/arial.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/TTF/DejaVuSans.ttf",
+    };
+
+    for (size_t i = 0; i < candidates.size() && !fontLoaded; i++) {
+        fontLoaded = font.loadFromFile(candidates[i]);
+    }
+
+    if (!fontLoaded) {
+        cerr << "No font found; on-screen text is disabled." << endl;
+    }
+}
+
 Text setText(int size, Color c, int x, int y, String s) {   //set text helper
 
-    font.loadFromFile("../font/arial.ttf");
     Text title;
     title.setFont(font);
     title.setCharacterSize(size);
@@ -26,7 +50,8 @@ Text setText(int size, Color c, int x, int y, String s) {   //set text helper
 
 int main() {
 
-    srand(time(NULL));
+    srand(static_cast<unsigned int>(time(NULL)));
+    loadFont();
     bool endCondition = false;                                  
 
     RenderWindow window(VideoMode(width, height), "AI Pong");   //create sfml window
@@ -52,19 +77,23 @@ int main() {
         
         if (!endCondition && pong.get_current_generation_value() != 100) {  //keep running the algorithm until the end condition is triggered or generation count > 100
             endCondition = pong.run_generation();
-            for (int i = 0; i < pong.get_paddles().size(); i++) {   //draw each paddle and ball on-screen
+            for (size_t i = 0; i < pong.get_paddles().size(); i++) {   //draw each paddle and ball on-screen
                 window.draw(pong.get_paddles()[i].getRect());
                 window.draw(pong.get_balls()[i].get_circ());
             }
         } else {
-            window.draw(gameEndText);   //draw the end screen text
+            if (fontLoaded) {
+                window.draw(gameEndText);   //draw the end screen text
+            }
         }
 
 
-        window.draw(currentGenerationText); //display current generation on-screen
+        if (fontLoaded) {
+            window.draw(currentGenerationText);
+        } //display current generation on-screen
         window.display();                   //update screen
 
-        //Sleep(1);                         //enable to watch in real-time
+        //std::this_thread::sleep_for(std::chrono::milliseconds(1)); //enable to watch in real-time
     }
 
     return 0;
