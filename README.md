@@ -4,10 +4,12 @@ Developed using C++ and SFML for graphical display.
 
 A generational approach to AI learning where using genetic techniques such as crossover and mutation, an infinite game of Pong is created.
 
-![image](https://github.com/EwanStewart/Genetic-Pong---CMP304/assets/80590593/e2471123-42ed-4658-b197-1bc5a77969c6)
+![Generation zero, with each paddle and its ball](docs/screenshot.png)
 
 
-https://github.com/EwanStewart/Genetic-Pong---CMP304/assets/80590593/a892ecfe-3817-447d-948e-4830cb09584d
+![Paddles learning across generations](docs/demo.gif)
+
+The clip above is also in the repository as [docs/demo.mp4](docs/demo.mp4).
 
 
 
