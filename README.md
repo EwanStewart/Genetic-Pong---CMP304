@@ -36,11 +36,3 @@ Run:
 
 The program picks up a system font automatically. On-screen text turns off if it finds none.
 
-## Layout
-
-```
-include/    class headers
-src/        implementation and entry point
-docs/       screenshot, demo clip and the coursework write-up
-```
-
