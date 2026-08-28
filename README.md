@@ -31,7 +31,8 @@ cmake --build build -j
 Run:
 
 ```bash
-./build/GeneticPong
+./build/bin/GeneticPong
 ```
 
 The program picks up a system font automatically. On-screen text turns off if it finds none.
+
